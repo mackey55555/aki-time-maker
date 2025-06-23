@@ -1,0 +1,72 @@
+.rbc-toolbar, .rbc-toolbar button, .rbc-toolbar span, .rbc-btn-group button {
+  color: #fff !important;
+}
+.rbc-toolbar button:disabled {
+  color: #bbb !important;
+}
+.rbc-off-range, .rbc-off-range-bg {
+  color: #bbb !important;
+}
+.rbc-header {
+  color: #fff !important;
+  font-weight: bold;
+  background: transparent !important;
+}
+.rbc-date-cell {
+  color: #fff !important;
+}
+.rbc-today {
+  background: rgba(52,211,153,0.15) !important;
+}
+.rbc-btn-group button {
+  background: transparent !important;
+  border: none !important;
+  font-weight: bold;
+  font-size: 1rem;
+}
+.rbc-toolbar button.rbc-active {
+  background: #34d399 !important;
+  color: #fff !important;
+}
+
+/* 仮想イベントのスタイル */
+.rbc-event.virtual-event {
+  overflow: visible !important;
+}
+
+/* 削除ボタンのスタイル */
+.rbc-event .delete-btn {
+  opacity: 0;
+  transform: scale(0.5) rotate(-90deg);
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+  pointer-events: none;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+  color: #fff;
+  background: #ef4444;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 20;
+  box-shadow: 0 2px 8px #ef444488;
+  font-size: 16px;
+  border: 2px solid #fff;
+}
+
+.rbc-event:hover .delete-btn {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  pointer-events: auto;
+}
+
+.rbc-event-content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+} 
