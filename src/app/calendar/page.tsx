@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { Calendar, dateFnsLocalizer, SlotInfo, Event as RBCEvent, View, stringOrDate } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, SlotInfo, View, stringOrDate } from 'react-big-calendar';
 import { format } from 'date-fns/format';
 import { parse } from 'date-fns/parse';
 import { startOfWeek } from 'date-fns/startOfWeek';
@@ -117,7 +118,7 @@ export default function CalendarPage() {
   };
 
   // 仮想イベントの移動・リサイズ
-  const handleVirtualEventMove = ({ event, start, end }: { event: VirtualEvent, start: stringOrDate, end: stringOrDate }) => {
+  const handleVirtualEventMove = ({ event, start, end }: { event: any, start: stringOrDate, end: stringOrDate }) => {
     setVirtualEvents(prev => prev.map(ev =>
       ev.id === event.id ? { ...ev, start: new Date(start), end: new Date(end), id: generateVirtualEventId(new Date(start), new Date(end)) } : ev
     ));
@@ -165,26 +166,28 @@ export default function CalendarPage() {
 
   // 仮想イベントの色分け
   const eventStyleGetter = (event: any) => {
-    if (virtualEvents.some(ev => ev.id === event.id)) {
+    const isVirtual = virtualEvents.some(ev => ev.id === event.id);
+    if (!isVirtual) { // Googleカレンダーのイベント
       return {
-        className: 'virtual-event',
         style: {
-          background: 'linear-gradient(90deg, #34d399 0%, #60a5fa 100%)',
+          background: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
           color: '#fff',
           borderRadius: 10,
-          border: '2px solid #16a34a',
-          opacity: 0.97,
-          boxShadow: '0 4px 24px 0 #34d39944',
+          boxShadow: '0 2px 12px 0 #3b82f644',
           transition: 'all 0.2s',
         }
       };
     }
+    // 仮想イベント
     return {
+      className: 'virtual-event',
       style: {
-        background: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
+        background: 'linear-gradient(90deg, #34d399 0%, #60a5fa 100%)',
         color: '#fff',
         borderRadius: 10,
-        boxShadow: '0 2px 12px 0 #3b82f644',
+        border: '2px solid #16a34a',
+        opacity: 0.97,
+        boxShadow: '0 4px 24px 0 #34d39944',
         transition: 'all 0.2s',
       }
     };
@@ -215,8 +218,8 @@ export default function CalendarPage() {
             popup
             eventPropGetter={eventStyleGetter}
             components={{ event: EventRenderer }}
-            onEventDrop={({ event, start, end }) => handleVirtualEventMove({ event: event as VirtualEvent, start, end })}
-            onEventResize={({ event, start, end }) => handleVirtualEventMove({ event: event as VirtualEvent, start, end })}
+            onEventDrop={({ event, start, end }) => handleVirtualEventMove({ event, start, end })}
+            onEventResize={({ event, start, end }) => handleVirtualEventMove({ event, start, end })}
             draggableAccessor={(event: any) => virtualEvents.some(ev => ev.id === event.id)}
             resizable
             toolbar={true}
