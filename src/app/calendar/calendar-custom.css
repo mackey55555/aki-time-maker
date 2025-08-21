@@ -1,32 +1,97 @@
+/* カレンダーツールバーのスタイル */
 .rbc-toolbar, .rbc-toolbar button, .rbc-toolbar span, .rbc-btn-group button {
-  color: #fff !important;
+  color: #2d3748 !important;
 }
+
 .rbc-toolbar button:disabled {
-  color: #bbb !important;
+  color: #a0aec0 !important;
 }
+
 .rbc-off-range, .rbc-off-range-bg {
-  color: #bbb !important;
+  color: #a0aec0 !important;
 }
+
 .rbc-header {
-  color: #fff !important;
-  font-weight: bold;
-  background: transparent !important;
+  color: #2d3748 !important;
+  font-weight: 600;
+  background: #f7fafc !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+  padding: 12px 8px !important;
 }
+
 .rbc-date-cell {
-  color: #fff !important;
+  color: #2d3748 !important;
+  font-weight: 500;
 }
+
 .rbc-today {
-  background: rgba(52,211,153,0.15) !important;
+  background: rgba(96, 133, 157, 0.1) !important;
+  border-radius: 8px !important;
 }
+
 .rbc-btn-group button {
-  background: transparent !important;
-  border: none !important;
-  font-weight: bold;
-  font-size: 1rem;
+  background: #f7fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #4a5568 !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
 }
+
+.rbc-btn-group button:hover {
+  background: #edf2f7 !important;
+  border-color: #cbd5e0 !important;
+  color: #2d3748 !important;
+}
+
 .rbc-toolbar button.rbc-active {
-  background: #34d399 !important;
+  background: #60859D !important;
   color: #fff !important;
+  border-color: #60859D !important;
+  box-shadow: 0 2px 4px rgba(96, 133, 157, 0.2) !important;
+}
+
+.rbc-toolbar button.rbc-active:hover {
+  background: #4a6b7d !important;
+  border-color: #4a6b7d !important;
+}
+
+/* カレンダーグリッドのスタイル */
+.rbc-month-view, .rbc-time-view {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.rbc-time-header {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.rbc-time-content {
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.rbc-time-gutter {
+  background: #f7fafc !important;
+  border-right: 1px solid #e2e8f0 !important;
+}
+
+.rbc-time-slot {
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.rbc-day-slot {
+  border-right: 1px solid #f1f5f9 !important;
+}
+
+.rbc-day-bg {
+  background: #ffffff !important;
+}
+
+.rbc-day-bg:hover {
+  background: #f8fafc !important;
 }
 
 /* 仮想イベントのスタイル */
@@ -45,7 +110,7 @@
   right: -10px;
   cursor: pointer;
   color: #fff;
-  background: #ef4444;
+  background: #e53e3e;
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -54,7 +119,7 @@
   justify-content: center;
   font-weight: bold;
   z-index: 20;
-  box-shadow: 0 2px 8px #ef444488;
+  box-shadow: 0 2px 8px rgba(229, 62, 62, 0.3);
   font-size: 16px;
   border: 2px solid #fff;
 }
@@ -69,4 +134,41 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-weight: 500;
+  padding: 2px 4px;
+}
+
+/* 時間軸のスタイル */
+.rbc-time-gutter .rbc-timeslot-group {
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.rbc-time-gutter .rbc-label {
+  color: #4a5568 !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* 週表示のスタイル */
+.rbc-month-view .rbc-row {
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.rbc-month-view .rbc-date-cell {
+  padding: 8px 4px !important;
+}
+
+/* 日表示のスタイル */
+.rbc-time-view .rbc-header {
+  background: #f7fafc !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+/* フォーカス状態のスタイル */
+.rbc-toolbar button:focus,
+.rbc-btn-group button:focus {
+  outline: none !important;
+  ring: 2px !important;
+  ring-color: #60859D !important;
+  ring-offset: 2px !important;
 } 
