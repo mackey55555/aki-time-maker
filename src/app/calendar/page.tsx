@@ -66,7 +66,6 @@ function MobileCalendarUI({
 }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedStartTime, setSelectedStartTime] = useState<string>('');
-  const [selectedEndTime, setSelectedEndTime] = useState<string>('');
   const [isSelectingEndTime, setIsSelectingEndTime] = useState(false);
 
   // 今日と明日の日付を生成
@@ -86,28 +85,10 @@ function MobileCalendarUI({
     return times;
   }, []);
 
-  // 選択された日付の予定を取得
-  const selectedDateEvents = useMemo(() => {
-    return events.filter(event => {
-      const eventDate = new Date(event.start);
-      return eventDate.toDateString() === selectedDate.toDateString();
-    });
-  }, [events, selectedDate]);
-
-  // 選択された日付の翌日の予定を取得
-  const nextDateEvents = useMemo(() => {
-    const nextDate = new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000);
-    return events.filter(event => {
-      const eventDate = new Date(event.start);
-      return eventDate.toDateString() === nextDate.toDateString();
-    });
-  }, [events, selectedDate]);
-
   // 日付選択
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
     setSelectedStartTime('');
-    setSelectedEndTime('');
     setIsSelectingEndTime(false);
   };
 
@@ -120,8 +101,6 @@ function MobileCalendarUI({
   // 終了時間入力
   const handleEndTimeInput = (time: string) => {
     if (time > selectedStartTime) {
-      setSelectedEndTime(time);
-      
       // 仮想イベントとして追加
       const start = new Date(selectedDate);
       const [startHour, startMinute] = selectedStartTime.split(':').map(Number);
@@ -136,7 +115,6 @@ function MobileCalendarUI({
       
       // 選択状態をリセット
       setSelectedStartTime('');
-      setSelectedEndTime('');
       setIsSelectingEndTime(false);
     }
   };
@@ -182,7 +160,7 @@ function MobileCalendarUI({
           </div>
         ) : (
           <div className="space-y-3">
-            {virtualEvents.map((event, index) => (
+            {virtualEvents.map((event) => (
               <div key={event.id} className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-200 shadow-sm">
                 <div className="flex-1 min-w-0">
                   <div className="text-sm text-gray-800 font-semibold">
@@ -216,7 +194,6 @@ function MobileCalendarUI({
               newDate.setDate(newDate.getDate() - 1);
               setSelectedDate(newDate);
               setSelectedStartTime('');
-              setSelectedEndTime('');
               setIsSelectingEndTime(false);
             }}
             className="p-2 text-gray-600 hover:text-[#60859D] hover:bg-gray-100 rounded-lg transition-all duration-200"
@@ -235,7 +212,6 @@ function MobileCalendarUI({
               newDate.setDate(newDate.getDate() + 1);
               setSelectedDate(newDate);
               setSelectedStartTime('');
-              setSelectedEndTime('');
               setIsSelectingEndTime(false);
             }}
             className="p-2 text-gray-600 hover:text-[#60859D] hover:bg-gray-100 rounded-lg transition-all duration-200"
@@ -393,7 +369,6 @@ export default function CalendarPage() {
   const [virtualEvents, setVirtualEvents] = useState<VirtualEvent[]>([]);
   const [copied, setCopied] = useState(false);
   const [calendarView, setCalendarView] = useState<View>('week');
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   useEffect(() => {
     const fetchEvents = async () => {
