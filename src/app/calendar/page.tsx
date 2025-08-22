@@ -64,9 +64,11 @@ function MobileCalendarUI({
   onAddVirtualEvent: (start: Date, end: Date) => void;
   events: CalendarEvent[];
 }) {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedStartTime, setSelectedStartTime] = useState<string>('');
+  // 状態管理
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedStartTime, setSelectedStartTime] = useState('');
   const [isSelectingEndTime, setIsSelectingEndTime] = useState(false);
+  const [selectedDateForTime, setSelectedDateForTime] = useState<Date | null>(null);
 
   // 今日と明日の日付を生成
   const today = new Date();
@@ -92,18 +94,19 @@ function MobileCalendarUI({
     setIsSelectingEndTime(false);
   };
 
-  // 時間選択（日付と時間を同時に選択）
-  const handleTimeSelect = (time: string) => {
+  // 時間選択
+  const handleTimeSelect = (time: string, date: Date) => {
     setSelectedStartTime(time);
+    setSelectedDateForTime(date);
     setIsSelectingEndTime(true);
-    
+
     // 終了時間選択部分まで自動スクロール
     setTimeout(() => {
       const endTimeSection = document.getElementById('end-time-selection');
       if (endTimeSection) {
-        endTimeSection.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
+        endTimeSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
         });
       }
     }, 100);
@@ -111,13 +114,13 @@ function MobileCalendarUI({
 
   // 終了時間入力
   const handleEndTimeInput = (time: string) => {
-    if (time > selectedStartTime) {
+    if (time > selectedStartTime && selectedDateForTime) {
       // 仮想イベントとして追加
-      const start = new Date(selectedDate);
+      const start = new Date(selectedDateForTime);
       const [startHour, startMinute] = selectedStartTime.split(':').map(Number);
       start.setHours(startHour, startMinute, 0, 0);
       
-      const end = new Date(selectedDate);
+      const end = new Date(selectedDateForTime);
       const [endHour, endMinute] = time.split(':').map(Number);
       end.setHours(endHour, endMinute, 0, 0);
       
@@ -126,6 +129,7 @@ function MobileCalendarUI({
       
       // 選択状態をリセット
       setSelectedStartTime('');
+      setSelectedDateForTime(null);
       setIsSelectingEndTime(false);
       
       // 画面上部の選択日時表示部分まで自動スクロール
@@ -273,16 +277,13 @@ function MobileCalendarUI({
                   {/* 選択された日付の時間スロット */}
                   <div 
                     className={`p-2 border-r border-gray-200 cursor-pointer transition-all duration-200 ${
-                      selectedStartTime === time
+                      selectedStartTime === time && selectedDateForTime?.getTime() === selectedDate.getTime()
                         ? 'bg-[#60859D] text-white ring-2 ring-[#60859D] ring-offset-2'
                         : hasEventAtTime(selectedDate, time)
                         ? 'bg-[#60859D] text-white'
                         : 'hover:bg-gray-50'
                     }`}
-                    onClick={() => {
-                      handleDateSelect(selectedDate);
-                      handleTimeSelect(time);
-                    }}
+                    onClick={() => handleTimeSelect(time, selectedDate)}
                   >
                     <div className="text-xs font-medium">{time}</div>
                     {hasEventAtTime(selectedDate, time) && (
@@ -293,16 +294,13 @@ function MobileCalendarUI({
                   {/* 選択された日付の翌日の時間スロット */}
                   <div 
                     className={`p-2 cursor-pointer transition-all duration-200 ${
-                      selectedStartTime === time
+                      selectedStartTime === time && selectedDateForTime?.getTime() === nextDate.getTime()
                         ? 'bg-[#60859D] text-white ring-2 ring-[#60859D] ring-offset-2'
                         : hasEventAtTime(nextDate, time)
                         ? 'bg-[#60859D] text-white'
                         : 'hover:bg-gray-50'
                     }`}
-                    onClick={() => {
-                      handleDateSelect(nextDate);
-                      handleTimeSelect(time);
-                    }}
+                    onClick={() => handleTimeSelect(time, nextDate)}
                   >
                     <div className="text-xs font-medium">{time}</div>
                     {hasEventAtTime(nextDate, time) && (
@@ -326,7 +324,7 @@ function MobileCalendarUI({
           
           <div className="text-center mb-4">
             <p className="text-sm text-gray-600">
-              選択日: {format(selectedDate, "M月d日(E)", { locale: ja })}
+              選択日: {selectedDateForTime ? format(selectedDateForTime, "M月d日(E)", { locale: ja }) : ''}
             </p>
             <p className="text-sm text-[#60859D] font-medium">
               開始時間: {selectedStartTime} 〜 終了時間を選択
