@@ -87,13 +87,6 @@ function MobileCalendarUI({
     return times;
   }, []);
 
-  // 日付選択
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-    setSelectedStartTime('');
-    setIsSelectingEndTime(false);
-  };
-
   // 時間選択
   const handleTimeSelect = (time: string, date: Date) => {
     setSelectedStartTime(time);
