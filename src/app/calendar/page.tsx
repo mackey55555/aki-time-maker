@@ -96,6 +96,17 @@ function MobileCalendarUI({
   const handleTimeSelect = (time: string) => {
     setSelectedStartTime(time);
     setIsSelectingEndTime(true);
+    
+    // 終了時間選択部分まで自動スクロール
+    setTimeout(() => {
+      const endTimeSection = document.getElementById('end-time-selection');
+      if (endTimeSection) {
+        endTimeSection.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }
+    }, 100);
   };
 
   // 終了時間入力
@@ -116,6 +127,23 @@ function MobileCalendarUI({
       // 選択状態をリセット
       setSelectedStartTime('');
       setIsSelectingEndTime(false);
+      
+      // 画面上部の選択日時表示部分まで自動スクロール
+      setTimeout(() => {
+        const selectedTimesSection = document.getElementById('selected-times-display');
+        if (selectedTimesSection) {
+          selectedTimesSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+          
+          // 一時的なハイライト効果を追加
+          selectedTimesSection.classList.add('ring-4', 'ring-[#60859D]', 'ring-opacity-50');
+          setTimeout(() => {
+            selectedTimesSection.classList.remove('ring-4', 'ring-[#60859D]', 'ring-opacity-50');
+          }, 2000);
+        }
+      }, 200);
     }
   };
 
@@ -150,7 +178,7 @@ function MobileCalendarUI({
   return (
     <div className="w-full space-y-6">
       {/* 選択された日時表示 */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+      <div id="selected-times-display" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
         {virtualEvents.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
@@ -161,7 +189,7 @@ function MobileCalendarUI({
         ) : (
           <div className="space-y-3">
             {virtualEvents.map((event) => (
-              <div key={event.id} className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-200 shadow-sm">
+              <div key={event.id} className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
                 <div className="flex-1 min-w-0">
                   <div className="text-sm text-gray-800 font-semibold">
                     {format(event.start, "M月d日(E)", { locale: ja })}
@@ -172,7 +200,7 @@ function MobileCalendarUI({
                 </div>
                 <button
                   onClick={() => onRemoveVirtualEvent(event.id)}
-                  className="ml-3 p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-all duration-200 flex-shrink-0"
+                  className="ml-3 p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-all duration-200 flex-shrink-0 hover:scale-110"
                   title="削除"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -244,9 +272,9 @@ function MobileCalendarUI({
                 <div key={time} className="grid grid-cols-2 border-b border-gray-100 last:border-b-0">
                   {/* 選択された日付の時間スロット */}
                   <div 
-                    className={`p-2 border-r border-gray-200 cursor-pointer transition-colors duration-200 ${
+                    className={`p-2 border-r border-gray-200 cursor-pointer transition-all duration-200 ${
                       selectedStartTime === time
-                        ? 'bg-[#60859D] text-white'
+                        ? 'bg-[#60859D] text-white ring-2 ring-[#60859D] ring-offset-2'
                         : hasEventAtTime(selectedDate, time)
                         ? 'bg-[#60859D] text-white'
                         : 'hover:bg-gray-50'
@@ -264,9 +292,9 @@ function MobileCalendarUI({
                   
                   {/* 選択された日付の翌日の時間スロット */}
                   <div 
-                    className={`p-2 cursor-pointer transition-colors duration-200 ${
+                    className={`p-2 cursor-pointer transition-all duration-200 ${
                       selectedStartTime === time
-                        ? 'bg-[#60859D] text-white'
+                        ? 'bg-[#60859D] text-white ring-2 ring-[#60859D] ring-offset-2'
                         : hasEventAtTime(nextDate, time)
                         ? 'bg-[#60859D] text-white'
                         : 'hover:bg-gray-50'
@@ -290,7 +318,10 @@ function MobileCalendarUI({
 
       {/* 終了時間入力 */}
       {isSelectingEndTime && (
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+        <div 
+          id="end-time-selection" 
+          className="bg-white rounded-2xl shadow-lg border-2 border-[#60859D] p-6 animate-pulse"
+        >
           <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">終了時間を選択</h3>
           
           <div className="text-center mb-4">
@@ -309,7 +340,7 @@ function MobileCalendarUI({
                 <button
                   key={time}
                   onClick={() => handleEndTimeInput(time)}
-                  className="p-3 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200"
+                  className="p-3 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 hover:scale-105"
                 >
                   {time}
                 </button>
