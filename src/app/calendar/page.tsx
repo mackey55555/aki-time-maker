@@ -667,6 +667,31 @@ export default function CalendarPage() {
           events={events}
         />
       </div>
+      
+      {/* フッター */}
+      <footer className="w-full mt-12 py-8 border-t border-gray-200 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+            <div className="text-sm text-gray-600">
+              © 2024 空きTime-Maker. All rights reserved.
+            </div>
+            <div className="flex space-x-6 text-sm">
+              <a 
+                href="/privacy-policy" 
+                className="text-gray-600 hover:text-[#60859D] transition-colors duration-200"
+              >
+                プライバシーポリシー
+              </a>
+              <a 
+                href="/terms-of-service" 
+                className="text-gray-600 hover:text-[#60859D] transition-colors duration-200"
+              >
+                利用規約
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 } 

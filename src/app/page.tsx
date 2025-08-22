@@ -67,12 +67,21 @@ export default function Home() {
         </a>
         <a
           className="flex items-center gap-2 hover:text-[#60859D] hover:underline hover:underline-offset-4 transition-colors duration-200"
-          href="/privacy"
+          href="/privacy-policy"
         >
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
           </svg>
-          プライバシー
+          プライバシーポリシー
+        </a>
+        <a
+          className="flex items-center gap-2 hover:text-[#60859D] hover:underline hover:underline-offset-4 transition-colors duration-200"
+          href="/terms-of-service"
+        >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+          </svg>
+          利用規約
         </a>
       </footer>
     </div>
